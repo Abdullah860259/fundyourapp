@@ -5,12 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import User from "@/lib/models/user";
 export const dynamic = "force-dynamic";
-import Loading from "@/Components/Loading";
 
 export default async function ProjectsPage() {
   await connectdb();
-  let project = await Project.find()
   const projects = await Project.find().populate("userid", "name ImageLink");
+  console.log(projects);
   return (
     <div className="min-h-screen bg-white text-black px-6 py-10">
       <h1 className="text-3xl font-bold mb-6 text-center">All Projects</h1>
