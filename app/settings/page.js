@@ -5,7 +5,7 @@ const Page = () => {
   const [IsStripeConnected, setIsStripeConnected] = useState();
   const { data: session, status } = useSession();
   const clientId = process.env.NEXT_PUBLIC_STRIPE_CLIENT_ID;
-  const redirectUri = encodeURIComponent('http://localhost:3000/api/stripe/oauth/callback');
+  const redirectUri = encodeURIComponent('https://fundyourproject.vercel.app/api/stripe/oauth/callback');
   const connectUrl = `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${clientId}&scope=read_write&redirect_uri=${redirectUri}`;
 
   useEffect(() => {
