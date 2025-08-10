@@ -19,7 +19,7 @@ export default async function ProjectsPage() {
             key={proj._id}
             className="bg-white cursor-pointer rounded-xl p-6 shadow-md transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl"
           >
-            <Link href={`/user/${proj.userid.id}`} prefetch={true} >
+            <Link href={`/user/${proj.userid._id}`} prefetch={true} >
               <div className="flex items-center gap-4 mb-4">
                 <Image
                   src={proj.userid?.ImageLink || "https://bit.ly/4oqrQVA"}
@@ -34,7 +34,7 @@ export default async function ProjectsPage() {
                 </div>
               </div>
             </Link>
-            <Link href={`/project/description/${proj.id}`} prefetch={true} >
+            <Link href={`/project/description/${proj._id}`} prefetch={true} >
               <Image src={proj.image} alt={proj.title || "Project Image"}
                 width={400} height={300} className="w-full rounded-lg object-fill object-center " />
               <h2 className="text-xl font-bold mb-2">{proj.title}</h2>
