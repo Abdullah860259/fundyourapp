@@ -1,15 +1,21 @@
-import React from "react";
-import connectdb from "@/lib/db";
-import Project from "@/lib/models/project";
+"use client"
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import User from "@/lib/models/user";
-export const dynamic = "force-dynamic";
 
-export default async function ProjectsPage() {
-  await connectdb();
-  const projects = await Project.find().populate("userid", "name ImageLink");
-  console.log(projects);
+export default function ProjectsPage() {
+  const [projects, setprojects] = useState([]);
+  
+  useEffect(  () => {
+    async function getprojects() {
+      let res = await fetch("/api/getallprojects",{method:"GET"})
+      res = await res.json();
+      console.log(res);
+      setprojects(res)
+    }
+    getprojects();
+  }, [])
+
   return (
     <div className="min-h-screen bg-white text-black px-6 py-10">
       <h1 className="text-3xl font-bold mb-6 text-center">All Projects</h1>
