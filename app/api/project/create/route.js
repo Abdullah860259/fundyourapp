@@ -20,6 +20,7 @@ export async function POST(req) {
     goal,
     image,
     tags,
+    investors:[],
   });
   await newProject.save();
   return NextResponse.json({

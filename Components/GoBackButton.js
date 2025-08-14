@@ -1,34 +1,37 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 
-export default function GoBackButton({ className }) {
+export default function GoBackButton({ className, backLink }) {
   const router = useRouter();
 
   return (
     <button
-      onClick={() => router.back()}
+      onClick={() => {
+        backLink ? router.push(backLink) : router.back();
+      }}
       className={`
-        px-5 py-2
-        text-blue-600
-        underline
-        rounded-md
+        px-6 py-2.5
+        mb-3
+        bg-gradient-to-r from-blue-400 to-blue-600
+        text-white
+        rounded-full
         shadow-md
-        my-3
-        transition
-        duration-300
-        ease-in-out
-        cursor-pointer
-        hover:text-blue-800
-        hover:shadow-xl
-        hover:scale-105
+        font-medium
+        transition-all duration-300
+        hover:from-blue-600 hover:to-blue-700
+        hover:shadow-lg
+        active:scale-95
         focus:outline-none
-        focus:ring-2
-        focus:ring-blue-400
+        focus:ring-2 focus:ring-blue-300
+        cursor-pointer
         ${className}
-        `}
-
+      `}
     >
-      &lt; Go Back
+      <div className="flex justify-evenly items-center gap-3" >
+        <ArrowLeft size={20} />
+        Go Back
+      </div>
     </button >
   );
 }

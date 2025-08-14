@@ -5,8 +5,7 @@ import User from "@/lib/models/user";
 export async function POST(req) {
   try {
     await connectDB();
-    const { amount, creatorId } = await req.json();
-
+    const { amount, creatorId, projectId, frontendSession } = await req.json();
     const creator = await User.findById(creatorId);
     if (!creator || !creator.connectedAccountId) {
       return new Response("Creator not found", { status: 404 });
@@ -28,10 +27,14 @@ export async function POST(req) {
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancelled`,
       payment_intent_data: {
-        application_fee_amount: Math.floor(amount * 0.1), // 10% fee
+        application_fee_amount: Math.floor(amount * 0.03), 
         transfer_data: {
           destination: creator.connectedAccountId,
         },
+        metadata:{
+          projectId,
+          session:JSON.stringify(frontendSession)
+        }
       },
     });
 

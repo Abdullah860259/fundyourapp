@@ -4,9 +4,11 @@ import CheckoutWrapper from "@/Components/CheckoutWrapper";
 import { useSession } from "next-auth/react";
 import { Toaster, toast } from 'sonner';
 import Loading from "@/Components/Loading";
-
+import { useParams } from "next/navigation";
+import SupportersList from "@/Components/Supporters";
 
 export default function PaymentOptions() {
+    const params = useParams();
     const { data: session } = useSession();
     const [method, setMethod] = useState("stripe");
     const [amount, setamount] = useState();
@@ -145,9 +147,11 @@ export default function PaymentOptions() {
                             loadingstop={() => {
                                 setIsLoading(false)
                             }}
-                            className="cursor-pointer" amount={amount * 100} />
+                            className="cursor-pointer" amount={amount * 100} session={session} projectId={params.id} />
                     </>
                 )}
+                <SupportersList loadingstop={() => setIsLoading(false)} loadingstart={()=>setIsLoading(true)} />
+
             </div>
         </div>
     );

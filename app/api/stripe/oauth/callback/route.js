@@ -24,10 +24,9 @@ export async function GET(req) {
         const connectedAccountId = response.stripe_user_id;
         await connectdb();
         await User.findByIdAndUpdate(userId, { connectedAccountId }, { new: true }); 
-        console.log(connectedAccountId,"getting the req 👀✅👋👌❤❤✳♥🤞🙃🤷‍♂️😍🧡🧡");
         return new Response(null, {
             status: 302,
-            headers: { Location: "/?isLogged=true" },
+            headers: { Location: "/settings" },
         });
     } catch (error) {
         console.error(error);

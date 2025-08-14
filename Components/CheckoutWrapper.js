@@ -5,7 +5,7 @@ import { Toaster, toast } from 'sonner';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-export default function CheckoutWrapper({ amount, creatorId, loadingstart, loadingstop }) {
+export default function CheckoutWrapper({ amount, creatorId, projectId,session, loadingstart, loadingstop }) {
 
   const handleClick = async () => {
     loadingstart()
@@ -15,16 +15,21 @@ export default function CheckoutWrapper({ amount, creatorId, loadingstart, loadi
       return;
     }
     try {
-      const res = await fetch("/api/create-checkout-session", {
+      const frontendSession = session;
+      const res = await fetch("/api/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, creatorId }),
+        body: JSON.stringify({ amount, creatorId, projectId, frontendSession}),
       });
       const { id } = await res.json();
+      if (res.status === 500) {
+        toast.error("Backend Server Issue")
+        return;
+      }
       const stripe = await stripePromise;
       await stripe.redirectToCheckout({ sessionId: id });
     } catch (err) {
-      console.error("Error redirecting:", err);
+      toast.error("Error redirecting:", err);
     } finally {
       loadingstop();
     }
