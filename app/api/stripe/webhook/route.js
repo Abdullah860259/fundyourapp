@@ -17,6 +17,7 @@ export async function POST(req) {
     }
 
     if (event.type === "payment_intent.succeeded") {
+        console.log("✅✅✅✅✅✅✅✅ req is coming to webhook");
         try {
             const paymentIntent = event.data.object;
             const metaData = paymentIntent.metadata;
