@@ -21,13 +21,13 @@ export async function POST(req) {
   const payload = Buffer.from(chunks);
   const sig = req.headers.get("stripe-signature");
   let event;
-  console.log("✅ Payment succeeded webhook received");
   try {
     event = stripe.webhooks.constructEvent(
       payload,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
+    console.log("✅ Payment succeeded webhook received");
   } catch (err) {
     console.error("⚠️ Webhook signature verification failed:", err.message);
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
