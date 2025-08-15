@@ -2,44 +2,31 @@
 import connectdb from "@/lib/db";
 import Stripe from "stripe";
 import project from "@/lib/models/project";
+import { buffer } from "micro";
 
-
-// export const config = {
-//   api: {
-//     bodyParser: false, // ✅ important to get raw body
-//   },
-// };
+export const config = {
+  api: { bodyParser: false }, // important
+};
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
-  // const rawBody = await req.arrayBuffer()
-  const chunks = [];
-  for await (const chunk of req.body) {
-    chunks.push(chunk);
-  }
-  const payload = Buffer.from(chunks);
   const sig = req.headers.get("stripe-signature");
+  const buf = Buffer.from(await req.arrayBuffer()); // raw body
   let event;
+
   try {
-    event = stripe.webhooks.constructEvent(
-      payload,
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET
-    );
+    event = stripe.webhooks.constructEvent(buf, sig, process.env.STRIPE_WEBHOOK_SECRET);
     console.log("✅ Payment succeeded webhook received");
   } catch (err) {
     console.error("🚨 Verification failed:", err.message);
-    console.log("Payload length:", payload.length);
+    console.log("Payload length:", buf.length);
     console.log("Signature header:", sig);
-    console.log("Secret present:",
-      process.env.STRIPE_WEBHOOK_SECRET ? "Yes" : "No"
-    );
+    console.log("Secret present:", process.env.STRIPE_WEBHOOK_SECRET ? "Yes" : "No");
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
   if (event.type === "payment_intent.succeeded") {
-
     try {
       const paymentIntent = event.data.object;
       const metaData = paymentIntent.metadata;
