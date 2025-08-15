@@ -3,23 +3,26 @@ import connectdb from "@/lib/db";
 import Stripe from "stripe";
 import project from "@/lib/models/project";
 
-export const config = {
-  api: {
-    bodyParser: false, // ✅ important to get raw body
-  },
-};
+
+// export const config = {
+//   api: {
+//     bodyParser: false, // ✅ important to get raw body
+//   },
+// };
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
   const sig = req.headers.get("stripe-signature");
-
-  // ✅ Use raw buffer from request
-  const buf = Buffer.from(await req.arrayBuffer());
+  const rawBody = await req.arrayBuffer()
 
   let event;
   try {
-    event = stripe.webhooks.constructEvent(buf, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    event = stripe.webhooks.constructEvent(
+      rawBody, // Convert to UTF-8 
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
   } catch (err) {
     console.error("⚠️ Webhook signature verification failed:", err.message);
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
