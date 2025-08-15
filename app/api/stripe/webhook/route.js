@@ -13,13 +13,14 @@ import project from "@/lib/models/project";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
+  console.log("✅ Payment succeeded webhook received");
   const sig = req.headers.get("stripe-signature");
   const rawBody = await req.arrayBuffer()
-
+  const payload = Buffer.from(rawBody);
   let event;
   try {
     event = stripe.webhooks.constructEvent(
-      rawBody, // Convert to UTF-8 
+      payload, 
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
@@ -29,7 +30,6 @@ export async function POST(req) {
   }
 
   if (event.type === "payment_intent.succeeded") {
-    console.log("✅ Payment succeeded webhook received");
 
     try {
       const paymentIntent = event.data.object;
