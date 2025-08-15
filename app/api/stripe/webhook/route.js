@@ -27,7 +27,7 @@ export async function POST(req) {
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
-  if (event.type === "payment_intent.succeeded") {
+  if (event.type === "payment_intent.succeeded" || event.type === "charge.succeeded") {
     try {
       const paymentIntent = event.data.object;
       const metaData = paymentIntent.metadata;
