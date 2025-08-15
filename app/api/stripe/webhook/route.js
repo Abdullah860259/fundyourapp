@@ -7,7 +7,7 @@ export const config = { api: { bodyParser: false } };
 
 export async function POST(req) {
     const sig = req.headers.get("stripe-signature");
-    const buf = await buffer(req); // <-- micro preserves raw body correctly
+    const buf = Buffer.from(await req.arrayBuffer());
     let event;
 
     try {
