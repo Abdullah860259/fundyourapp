@@ -21,6 +21,7 @@ export async function POST(req) {
   } catch (err) {
     console.error("🚨 Verification failed:", err.message);
     console.log("Payload length:", buf.length);
+    console.log("payload",buf.toString());
     console.log("Signature header:", sig);
     console.log("Secret present:", process.env.STRIPE_WEBHOOK_SECRET ? "Yes" : "No");
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
