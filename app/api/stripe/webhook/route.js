@@ -13,7 +13,6 @@ import project from "@/lib/models/project";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
-  console.log("✅ Payment succeeded webhook received");
   // const rawBody = await req.arrayBuffer()
   const chunks = [];
   for await (const chunk of req.body) {
@@ -22,6 +21,7 @@ export async function POST(req) {
   const payload = Buffer.from(chunks);
   const sig = req.headers.get("stripe-signature");
   let event;
+  console.log("✅ Payment succeeded webhook received");
   try {
     event = stripe.webhooks.constructEvent(
       payload,
