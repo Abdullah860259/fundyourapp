@@ -11,13 +11,13 @@ export const config = {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
+  console.log("✅ Payment succeeded webhook received");
   const sig = req.headers.get("stripe-signature");
   const buf = Buffer.from(await req.arrayBuffer()); // raw body
   let event;
 
   try {
     event = stripe.webhooks.constructEvent(buf, sig, process.env.STRIPE_WEBHOOK_SECRET);
-    console.log("✅ Payment succeeded webhook received");
   } catch (err) {
     console.error("🚨 Verification failed:", err.message);
     console.log("Payload length:", buf.length);
