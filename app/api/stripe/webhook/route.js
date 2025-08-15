@@ -7,7 +7,7 @@ export const config = { api: { bodyParser: false } };
 
 export async function POST(req) {
   const sig = req.headers.get("stripe-signature");
-  const buf = await buffer(req); // raw body required
+  const buf = Buffer.from(await req.arrayBuffer()); // <-- fix for App Router
   let event;
 
   try {
