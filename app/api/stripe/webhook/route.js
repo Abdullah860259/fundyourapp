@@ -30,7 +30,7 @@ export async function POST(req) {
     console.log("✅ Payment succeeded webhook received");
   } catch (err) {
     console.error("🚨 Verification failed:", err.message);
-    console.log("Payload length:", rawBody.length);
+    console.log("Payload length:", payload.length);
     console.log("Signature header:", sig);
     console.log("Secret present:",
       process.env.STRIPE_WEBHOOK_SECRET ? "Yes" : "No"
