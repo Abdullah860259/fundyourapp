@@ -1,8 +1,14 @@
 "use client";
 
-export default function Loading() {
+export default function Loading({ className }) {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 500,   // Y position in px
+      behavior: "smooth" // optional: "auto" or "smooth"
+    });
+  }
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-purple-50">
+    <div onClick={scrollToTop} className={`min-h-screen flex flex-col items-center justify-center bg-purple-50 ${className} `}>
       <div className="relative w-28 h-28">
         {/* Outer rotating ring */}
         <div className="absolute inset-0 border-4 border-purple-300 rounded-full animate-spin border-t-purple-700"></div>

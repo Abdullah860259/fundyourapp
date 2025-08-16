@@ -10,13 +10,18 @@ const Page = () => {
     const params = useParams();
     const [project, setProject] = useState(null);
     const [isLoading, setIsLoading] = useState(true); // loading state
-
+    const [totalAmount, settotalAmount] = useState(null)
     useEffect(() => {
         async function getProject() {
             setIsLoading(true); // start loading
             try {
                 let projectRes = await fetch(`/api/project/get/${params.id}`, { method: "GET" });
                 const res = await projectRes.json();
+                if (res.investors.length >= 1) {
+                    const totalAmountt = res.investors.reduce((sum, investor) => sum + investor.amount, 0);
+                    console.log(totalAmountt)
+                    settotalAmount(totalAmountt)
+                }
                 setProject(res);
             } catch (error) {
                 console.error(error);
@@ -67,11 +72,19 @@ const Page = () => {
 
                     <p className="text-gray-700 leading-relaxed mb-6">{project.description}</p>
 
-                    <div className="bg-gray-100 p-4 rounded-lg">
+                    <div className="bg-gray-100 p-4 rounded-lg flex gap-2 flex-col">
                         <p className="text-lg font-medium text-gray-800">
                             Funding Goal:{" "}
                             <span className="text-green-600 font-bold">${project.goal}</span>
                         </p>
+                        
+                        <p className="text-lg font-medium text-gray-800">
+                            Total Funded:{" "}
+                            <span className="text-green-600 font-bold">
+                                {totalAmount !== 0 && totalAmount !== null ? `$${totalAmount}` : "No Investment"}
+                            </span>
+                        </p>
+
                     </div>
                     <Link href={`/project/${params.id}/fund`}>
                         <button className="mt-3 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg cursor-pointer shadow-lg transition-all duration-300 ease-in-out hover:bg-blue-700 hover:shadow-2xl hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-400">

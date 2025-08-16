@@ -16,6 +16,7 @@ export async function POST(req) {
       email,
       ImageLink: image,
       createdAt: new Date(),
+      settings: { showInvestors: true },
     });
     user = await newUser.save(); // save and assign to `user`
   }

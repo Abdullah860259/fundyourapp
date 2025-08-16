@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import GoBackButton from "@/Components/GoBackButton";
+import ShowInvestorsToggle from "@/Components/ShowInvestors";
 
 const Page = () => {
   const [IsStripeConnected, setIsStripeConnected] = useState();
@@ -10,6 +11,10 @@ const Page = () => {
   const clientId = process.env.NEXT_PUBLIC_STRIPE_CLIENT_ID;
   const redirectUri = encodeURIComponent(`${process.env.NEXTAUTH_URL}/api/stripe/oauth/callback`);
   const connectUrl = `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${clientId}&scope=read_write&redirect_uri=${redirectUri}`;
+
+  const saveChanges = () =>{
+    e.preventDefault();
+  }
 
   useEffect(() => {
     if (status !== "authenticated") return;
@@ -105,7 +110,8 @@ const Page = () => {
                 <button className="btn btn-outline btn-error hover:text-white" onClick={disconnectStripe} >Disconnect Stripe</button>
               </>
             )}
-            <button className="btn btn-primary w-full mt-3 text-white hover:opacity-90">Save Changes</button>
+            <ShowInvestorsToggle/>
+            <button onClick={saveChanges} type="submit" className="btn btn-primary w-full mt-3 text-white hover:opacity-90">Save Changes</button>
           </form>
         </div>
       </div>
