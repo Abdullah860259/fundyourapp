@@ -36,9 +36,34 @@ export async function POST(req) {
     try {
       switch (event.type) {
         case 'checkout.session.completed': {
-          const data = event.data.object;
-          console.log(`💰 CheckoutSession status: ${data.payment_status}`);
-          break;
+              try {
+                const paymentIntent = event.data.object;
+                const metaData = paymentIntent.metadata;
+                const session = JSON.parse(metaData.session);
+
+                await connectdb();
+
+                const fundedProject = await project.findById(metaData.projectId);
+                if (!fundedProject) return new Response("Project not found", { status: 404 });
+
+                fundedProject.investors.push({
+                  userid: session.user.id,
+                  user: {
+                    name: session.user.name,
+                    email: session.user.email,
+                    image: session.user.image,
+                  },
+                  amount: paymentIntent.amount / 100,
+                  date: new Date(),
+                });
+
+                fundedProject.markModified("investors");
+                await fundedProject.save();
+              } catch (err) {
+                console.error("DB save failed:", err);
+                return new Response(`Save failed: ${err.message}`, { status: 500 });
+              }
+              break;
         }
         case 'payment_intent.payment_failed': {
           const data = event.data.object;
@@ -46,8 +71,33 @@ export async function POST(req) {
           break;
         }
         case 'payment_intent.succeeded': {
-          const data = event.data.object;
-          console.log(`💰 PaymentIntent status: ${data.status}`);
+          try {
+            const paymentIntent = event.data.object;
+            const metaData = paymentIntent.metadata;
+            const session = JSON.parse(metaData.session);
+
+            await connectdb();
+
+            const fundedProject = await project.findById(metaData.projectId);
+            if (!fundedProject) return new Response("Project not found", { status: 404 });
+
+            fundedProject.investors.push({
+              userid: session.user.id,
+              user: {
+                name: session.user.name,
+                email: session.user.email,
+                image: session.user.image,
+              },
+              amount: paymentIntent.amount / 100,
+              date: new Date(),
+            });
+
+            fundedProject.markModified("investors");
+            await fundedProject.save();
+          } catch (err) {
+            console.error("DB save failed:", err);
+            return new Response(`Save failed: ${err.message}`, { status: 500 });
+          }
           break;
         }
         default:
