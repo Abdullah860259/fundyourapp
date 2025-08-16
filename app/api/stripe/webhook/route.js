@@ -11,18 +11,19 @@ export async function POST(req) {
   console.log("✅ Payment succeeded webhook received");
   const stripeSignature = (await headers()).get('stripe-signature');
   let event;
+  let payload = await req.text();
 
   try {
     event = stripe.webhooks.constructEvent(
-      await req.text(),
+      payload,
       stripeSignature,
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
     console.error("🚨 Verification failed:", err.message);
-    console.log("Payload length:", buf.length);
-    console.log("payload", buf.toString());
-    console.log("Signature header:", sig);
+    console.log("Payload length:", stripeSignature.length);
+    console.log("payload", payload);
+    console.log("Signature header:",stripeSignature);
     console.log("Secret present:", process.env.STRIPE_WEBHOOK_SECRET ? "Yes" : "No");
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
