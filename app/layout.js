@@ -53,6 +53,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         {/* Google Analytics */}
+        {/* <head>
+          <link rel="icon" href="/favicon.ico" sizes="any" />
+        </head> */}
         <Script
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-6HN3QHZXWN"

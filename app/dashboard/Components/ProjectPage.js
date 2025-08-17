@@ -11,7 +11,6 @@ export default function ProjectsPage() {
     async function getprojects() {
       let res = await fetch("/api/getallprojects", { method: "GET" })
       res = await res.json();
-      console.log(res);
       setprojects(res);
       setisLoading(false)
     }

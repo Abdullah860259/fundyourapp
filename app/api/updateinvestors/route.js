@@ -8,7 +8,6 @@ export async function GET(req) {
         const { searchParams } = new URL(req.url);
         const id = searchParams.get("id");
         const userData = await user.findById(id);
-        console.log(userData);
         return new NextResponse(userData.settings.showInvestors, { status: 200 });
     } catch (error) {
         console.error(error);

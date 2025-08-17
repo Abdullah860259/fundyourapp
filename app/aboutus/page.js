@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
+import GoBackButton from "@/Components/GoBackButton";
 
 export default function AboutUs() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-100 text-gray-900 px-6 py-16 flex flex-col items-center">
+      <GoBackButton className={"absolute top-20 left-5"} />
       <h1 className="text-5xl font-extrabold text-purple-700 mb-6 animate-fadeInUp">
         About Us
       </h1>

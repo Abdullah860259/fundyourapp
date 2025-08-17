@@ -10,7 +10,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const pathname = usePathname();
-
+  
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
@@ -22,7 +22,7 @@ const Navbar = () => {
     <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-purple-50/70 shadow-lg border-b border-purple-200">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between py-3 px-5 md:px-8">
         {/* Left */}
-        <Link href="/" className="text-purple-800 font-extrabold text-xl md:text-2xl hover:text-purple-600 transition">
+        <Link href={status === "authenticated" ? "/dashboard" : "/"} className="text-purple-800 font-extrabold text-xl md:text-2xl hover:text-purple-600 transition">
           #FundYourProject
         </Link>
 

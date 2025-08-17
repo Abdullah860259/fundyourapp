@@ -42,7 +42,6 @@ export async function POST(req) {
             const paymentIntent = event.data.object;
             const metaData = paymentIntent.metadata;
             let session;
-            console.log(typeof metaData.session);
             if (typeof metaData.session === "string") {
               session = JSON.parse(metaData.session);
             } else {
@@ -78,7 +77,6 @@ export async function POST(req) {
             const paymentIntent = event.data.object;
             const metaData = paymentIntent.metadata;
             let session;
-            console.log(typeof metaData.session,"✅✅✅✅✅✅✅✅");
             if (typeof metaData.session === "string") {
               session = JSON.parse(metaData.session);
             } else {

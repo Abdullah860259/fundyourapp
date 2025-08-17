@@ -156,7 +156,6 @@ export default function PaymentOptions() {
                             <CheckoutWrapper
                                 creatorId={session?.user?.id}
                                 loadingstart={() => {
-                                    console.log("loading started ✅✅✅")
                                     setIsLoading(true)
                                 }}
                                 loadingstop={() => {

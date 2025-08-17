@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
+import GoBackButton from "@/Components/GoBackButton";
 
 export default function PressKit() {
   return (
-    <div className="min-h-screen bg-gradient-to-tr  from-purple-700 via-purple-500 to-purple-300 text-black px-6 py-12 flex flex-col items-center font-sans">
+    <div className="min-h-screen bg-gradient-to-tr  from-purple-700 via-purple-500 to-purple-300 text-black px-6 py-16  flex flex-col items-center font-sans">
+      <GoBackButton className={"absolute top-20 left-2"} />
       <div className="w-full max-w-4xl bg-white bg-opacity-20 rounded-3xl p-8 shadow-lg backdrop-blur-md">
         <h1 className="text-4xl font-extrabold mb-8 text-center drop-shadow-lg">
           Abdullah Anwar - Press Kit

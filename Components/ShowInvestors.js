@@ -16,8 +16,7 @@ export default function ShowInvestorsToggle() {
       setShowInvestors(JSON.parse(res))
     }
     fetchInvestors();
-  }, [session])
-
+  }, [session.status, session.data?.user?.id])
 
   const handleInvestors = async () => {
     const newValue = !showInvestors;

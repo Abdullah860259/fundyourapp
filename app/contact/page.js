@@ -3,31 +3,58 @@ import React, { useState } from "react";
 import { Toaster, toast } from "sonner";
 import emailjs from 'emailjs-com';
 import { useRef } from "react";
+import GoBackButton from "@/Components/GoBackButton";
+import { json } from "micro";
+import { Flag } from "lucide-react";
 
 export default function Contact() {
   const form = useRef();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [submitbtn, setsubmitbtn] = useState(true)
+  const [sending, setsending] = useState(false);
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
-    console.log(formData);
-    if (Object.values(formData).some(value => value === "")) {
-      toast.error("All the Fields must be Filled")
+  const handleSubmit = async (e) => {
+    setsending(true)
+    e.preventDefault();
+    console.log(submitbtn);
+    if (!submitbtn) {
+      console.log("you can send email only once");
+      toast.error("You can send an Email only Once")
+      setsending(false)
       return
     }
-    e.preventDefault();
-    emailjs.sendForm("service_sooaq33", "template_g8szup3",form.current, "PDGtErekBXv0HSLiw")
-      .then((result) => {
-        toast.success("Email Sent Successfully")
-        setFormData({ name: "", email: "", message: "" })
-      }, (error) => {
-    
-        toast.error("Something Went Wrong" )
-      });
-    setSubmitted(true);
+    setsubmitbtn(false)
+    setSubmitted(false)
+    if (Object.values(formData).some(value => value.trim() === "")
+    ) {
+      toast.error("All the Fields must be Filled")
+      setsending(false)
+      return
+    }
+    console.log(formData.email);
+    const res = await fetch(`/api/emailexistance?email=${formData.email}`)
+    const existence = await res.json();
+    console.log("existanc is ", existence.message);
+    if (existence.message === "true") {
+      emailjs.sendForm("service_sooaq33", "template_g8szup3", form.current, "PDGtErekBXv0HSLiw")
+        .then((result) => {
+          console.log("main is sent");
+          toast.success("Email Sent Successfully")
+          setsending(false)
+          setSubmitted(true);
+          setFormData({ name: "", email: "", message: "" })
+        }, (error) => {
+          toast.error("Something Went Wrong")
+        });
+    } else {
+      toast.error("Email Does not exists")
+      setsending(false)
+      setsubmitbtn(true)
+    }
   };
 
   return (
@@ -49,6 +76,7 @@ export default function Contact() {
         }}
       />
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-100 px-6 py-16 flex flex-col items-center text-gray-900">
+        <GoBackButton className={"absolute top-20 left-5"} />
         <h1 className="text-5xl font-extrabold text-purple-700 mb-8 animate-fadeInUp">
           Contact Me
         </h1>
@@ -155,10 +183,9 @@ export default function Contact() {
 
             <button
               type="submit"
-              onClick={handleSubmit}
               className="bg-purple-600 text-white font-semibold py-3 rounded hover:bg-purple-700 transition-colors"
             >
-              Send
+              {sending ? "Sending..." : "Send Email"}
             </button>
 
             {submitted && (

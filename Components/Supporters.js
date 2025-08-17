@@ -14,10 +14,8 @@ export default function SupportersList() {
     setisLoading(true)
     const getsupporters = async () => {
       try {
-        console.log("hello");
         let res = await fetch(`/api/supporter?id=${params.id}`)
         res = await res.json();
-        console.log(res);
         const arrangedData = res.sort((a, b) => b.amount - a.amount);
         setsupporters(arrangedData)
       } catch (error) {
