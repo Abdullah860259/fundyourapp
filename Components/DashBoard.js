@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function ProjectsPage() {
   
   await connectdb();
-  let project = await Project.find()
+  
   const projects = await Project.find().populate("userid", "name ImageLink");
   return (
     <div className="min-h-screen bg-white  text-black px-6 md:py-10 py-40  ">
@@ -20,7 +20,7 @@ export default async function ProjectsPage() {
             className="bg-white cursor-pointer rounded-xl p-6 shadow-md transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl"
           >
             <Link href={`/user/${proj.userid.id}`} >
-              <div className="flex items-center gap-4 mb-4">
+              <div className="flex  hover:bg-gray-200 rounded-4xl p-1 items-center gap-4 mb-4">
                 <Image
                   src={proj.userid?.ImageLink || "https://bit.ly/4oqrQVA"}
                   alt={proj.userid?.name || "Author"}

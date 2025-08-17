@@ -19,7 +19,6 @@ const Page = () => {
                 const res = await projectRes.json();
                 if (res.investors.length >= 1) {
                     const totalAmountt = res.investors.reduce((sum, investor) => sum + investor.amount, 0);
-                    console.log(totalAmountt)
                     settotalAmount(totalAmountt)
                 }
                 setProject(res);
@@ -40,8 +39,9 @@ const Page = () => {
         return <div className='text-black'>Something went wrong</div>;
     }
 
+
     return (
-        <div className="min-h-screen bg-gray-50 py-12 px-6">
+        <div className="min-h-screen select-none bg-gray-50 py-12 px-6">
             <GoBackButton />
             <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
 
@@ -56,19 +56,22 @@ const Page = () => {
                 <div className="p-6">
                     <h1 className="text-3xl font-bold text-gray-900 mb-4">{project.title}</h1>
 
-                    <div className="flex items-center gap-4 mb-6">
-                        <Image
-                            src={project.userid.ImageLink || "https://bit.ly/4oqrQVA"}
-                            alt={project.userid.name || "Author"}
-                            width={50}
-                            height={50}
-                            className="rounded-full object-cover border"
-                        />
-                        <div>
-                            <p className="font-semibold text-gray-800">{project.userid.name}</p>
-                            <p className="text-sm text-gray-500">Author</p>
+                    <Link href={`/user/${project.userid._id}`}>
+                        <div className="flex items-center gap-4 mb-6 p-2 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
+                            <Image
+                                src={project.userid.ImageLink || "https://bit.ly/4oqrQVA"}
+                                alt={project.userid.name || "Author"}
+                                width={50}
+                                height={50}
+                                className="rounded-full object-cover border"
+                            />
+                            <div>
+                                <p className="font-semibold text-gray-800">{project.userid.name}</p>
+                                <p className="text-sm text-gray-500">Author</p>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
+
 
                     <p className="text-gray-700 leading-relaxed mb-6">{project.description}</p>
 
@@ -77,7 +80,7 @@ const Page = () => {
                             Funding Goal:{" "}
                             <span className="text-green-600 font-bold">${project.goal}</span>
                         </p>
-                        
+
                         <p className="text-lg font-medium text-gray-800">
                             Total Funded:{" "}
                             <span className="text-green-600 font-bold">

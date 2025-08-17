@@ -22,11 +22,11 @@ export const metadata = {
     title: "Abdullah – Portfolio & Projects",
     description:
       "Explore Abdullah's portfolio showcasing web development skills, software projects, and engineering journey.",
-    url: "https://yourdomain.com",
+    url: "http://localhost:3000",
     siteName: "Abdullah Portfolio",
     images: [
       {
-        url: "https://yourdomain.com/og-image.png",
+        url: "http://localhost:3000/og-image.png",
         width: 1200,
         height: 630,
         alt: "Abdullah Portfolio",
@@ -40,11 +40,10 @@ export const metadata = {
     title: "Abdullah – Portfolio & Projects",
     description:
       "Pre-engineering student & aspiring software engineer – explore my portfolio and projects.",
-    images: ["https://yourdomain.com/og-image.png"],
+    images: ["http://localhost:3000/og-image.png"],
   },
   icons: {
     icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
 };

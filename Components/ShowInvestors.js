@@ -2,6 +2,7 @@
 import authOptions from "@/lib/auth";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function ShowInvestorsToggle() {
   const session = useSession();
@@ -12,7 +13,6 @@ export default function ShowInvestorsToggle() {
       if (session.status !== "authenticated") return;
       let res = await fetch(`/api/updateinvestors?id=${session.data.user.id}`)
       res = await res.text();
-      console.log(res);
       setShowInvestors(JSON.parse(res))
     }
     fetchInvestors();
@@ -27,13 +27,13 @@ export default function ShowInvestorsToggle() {
       userid: session.data.user.id,
       showInvestors: newValue
     }
-    let res = await fetch("/api/updateinvestors", {
+    const res = await fetch("/api/updateinvestors", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body)
     })
-    res = await res.text();
-    console.log(res);
+    const message = await res.text();
+    toast[res.status === 200 ? "success" : "error"](message)
   }
 
 

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Loading from "@/Components/Loading";
 import { useRouter } from "next/navigation";
 import { Toaster, toast } from "sonner";
+import GoBackButton from "@/Components/GoBackButton";
 
 const Page = () => {
   const router = useRouter();
@@ -82,53 +83,68 @@ const Page = () => {
         }}
       />
       {isLoading && (<Loading />)}
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-white via-indigo-50 to-purple-100 py-12 px-4">
-        <div className="flex flex-col items-center mb-10">
-          <img
-            src={user.image}
-            alt="Profile"
-            className="w-32 h-32 rounded-full shadow-lg border-4 border-white object-cover mb-4"
-          />
-          <h2 className="text-3xl font-bold text-gray-800 mb-1">{user.name}</h2>
-          <span className="text-lg text-gray-500">{user.email}</span>
-        </div>
-        <div className="flex flex-col md:flex-row gap-8 w-full max-w-3xl justify-center items-center md:items-stretch">
-          {projects.map((project, idx) => (
-            <Link
-              href={`/project/${project._id}`}
-              key={idx}
-              className="w-full md:w-1/2 max-w-xs"
-            >
-              <div className="bg-white cursor-pointer hover:-translate-y-2 hover:shadow-2xl hover:shadow-black transition-all duration-300 rounded-2xl shadow-xl flex flex-col items-center p-6">
-                <img
-                  src={project.image}
-                  alt="Server Issue"
-                  className="w-28 h-28 rounded-xl object-cover mb-4 border-2 border-indigo-100"
-                />
-                <div className="flex-1 text-black text-center">
-                  <h3 className="text-xl font-semibold text-indigo-700 mb-2">
-                    {project.title}
-                  </h3>
-                  <div className={`badge ${project.tags === "active" ? "badge-primary" : "badge-secondary"}`}>
-                    {project.tags}
+      {!isLoading && (
+        <>
+          <GoBackButton className={"absolute top-20 left-6"} />
+          <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-white via-indigo-50 to-purple-100 py-12 px-4">
+            <div className="flex flex-col items-center mb-10">
+              <img
+                src={user.image}
+                alt="Profile"
+                className="w-32 h-32 rounded-full shadow-lg border-4 border-white object-cover mb-4"
+              />
+              <h2 className="text-3xl font-bold text-gray-800 mb-1">{user.name}</h2>
+              <span className="text-lg text-gray-500">{user.email}</span>
+            </div>
+            <div className="flex flex-col md:flex-row gap-8 w-full max-w-3xl justify-center items-center md:items-stretch">
+              {projects.map((project, idx) => (
+                <>
+                  <div className="bg-white cursor-pointer hover:-translate-y-2 hover:shadow-2xl hover:shadow-black transition-all duration-300 rounded-2xl shadow-xl flex flex-col items-center p-6">
+                    <img
+                      src={project.image}
+                      alt="Server Issue"
+                      className="w-28 h-28 rounded-xl object-cover mb-4 border-2 border-indigo-100"
+                    />
+                    <div className="flex-1 text-black text-center">
+                      <h3 className="text-xl font-semibold text-indigo-700 mb-2">
+                        {project.title}
+                      </h3>
+                      <div className={`badge ${project.tags === "active" ? "badge-primary" : "badge-secondary"}`}>
+                        {project.tags}
+                      </div>
+
+                      <p>
+                        {project.createdAt
+                          ? new Date(project.updatedAt.toLocaleString() || project.createdAt).toLocaleString()
+                          : "No date"}
+                      </p>
+                    </div>
+                    <div className="flex gap-3 mt-2" >
+                      <Link
+                        href={`/project/${project._id}`}
+                        className="w-full md:w-1/2 max-w-xs"
+                      >
+                        <button class="btn btn-outline btn-primary">Edit</button>
+                      </Link>
+                      <Link
+                        href={`/project/description/${project._id}`}
+                        className="w-full md:w-1/2 max-w-xs"
+                      >
+                        <button className="btn btn-active btn-info">Preview</button>
+                      </Link>
+                    </div>
                   </div>
+                </>
+              ))}
+            </div>
 
-                  <p>
-                    {project.createdAt
-                      ? new Date(project.updatedAt.toLocaleString() || project.createdAt).toLocaleString()
-                      : "No date"}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+            <button onClick={handleCreation} className="btn btn-outline hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.9)] btn-primary text-center mx-auto mt-10">
+              Create New Project
+            </button>
 
-        <button onClick={handleCreation} className="btn btn-outline hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.9)] btn-primary text-center mx-auto mt-10">
-          Create New Project
-        </button>
-
-      </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

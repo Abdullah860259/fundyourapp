@@ -5,6 +5,7 @@ import Image from 'next/image'
 import GoBackButton from '@/Components/GoBackButton'
 import Link from 'next/link'
 import Loading from '@/Components/Loading'  // import loading
+import toast from 'react-hot-toast'
 
 const Page = () => {
     const { id } = useParams();
@@ -19,12 +20,12 @@ const Page = () => {
                 const authorRes = await fetch(`/api/user/get/${id}`, { method: "GET" });
                 const authorData = await authorRes.json();
                 setAuthor(authorData);
-
                 const projectsRes = await fetch(`/api/project/get?id=${id}`);
                 const projectsData = await projectsRes.json();
                 setProjects(projectsData);
             } catch (error) {
                 console.error(error);
+                toast.error(error)
             } finally {
                 setIsLoading(false);  // stop loading
             }
@@ -42,8 +43,8 @@ const Page = () => {
 
     return (
         <div className='w-full h-auto bg-white py-5 relative'>
+            <GoBackButton className="m-5" />
             <div className="min-h-screen shadow-lg hover:shadow-2xl transition-shadow duration-300 relative bg-white text-gray-900 p-6 max-w-5xl mx-auto">
-                <GoBackButton className="my-5" />
                 <div className="flex flex-col sm:flex-row items-center gap-6 mb-10">
                     <Image
                         src={author.ImageLink || "/default-profile.png"}
@@ -55,6 +56,8 @@ const Page = () => {
                     <div className="text-center sm:text-left">
                         <h1 className="text-3xl font-bold">{author.name}</h1>
                         <p className="text-gray-600">{author.email}</p>
+                        {author.createdAt && (<p className="text-gray-500 text-sm">Joined: {new Date(author.createdAt).toLocaleDateString()}</p>)}
+
                     </div>
                 </div>
 

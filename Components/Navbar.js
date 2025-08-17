@@ -110,12 +110,12 @@ const Navbar = () => {
           ) : (
             <>
               <Link href="/login">
-                <button className="bg-purple-700 hover:bg-purple-800 text-white px-4 py-1 rounded-md transition">
+                <button className="bg-purple-700 cursor-pointer hover:bg-purple-800 text-white px-4 py-1 rounded-md transition">
                   Login
                 </button>
               </Link>
               <Link href="/login">
-                <button className="border border-purple-700 text-purple-700 hover:bg-purple-700 hover:text-white px-4 py-1 rounded-md transition">
+                <button className="border cursor-pointer border-purple-700 text-purple-700 hover:bg-purple-700 hover:text-white px-4 py-1 rounded-md transition">
                   Sign Up
                 </button>
               </Link>
